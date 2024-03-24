@@ -1,0 +1,256 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{graphicx,textcomp}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage[reqno]{amsmath}
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{endnotes}
+\usepackage{lscape}
+\newtheorem{com}{Comment}
+\usepackage{float}
+\usepackage{hyperref}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+\usepackage[compact]{titlesec}
+\usepackage{dcolumn}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{multirow}
+\usepackage{xcolor}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\definecolor{light-gray}{gray}{0.65}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+\newcommand{\Sref}[1]{Section~\ref{#1}}
+\newtheorem{hyp}{Hypothesis}
+
+\title{Problem Set 3}
+\date{Due: March 24, 2024}
+\author{Applied Stats II}
+
+
+\begin{document}
+	\maketitle
+	\section*{Instructions}
+	\begin{itemize}
+	\item Please show your work! You may lose points by simply writing in the answer. If the problem requires you to execute commands in \texttt{R}, please include the code you used to get your answers. Please also include the \texttt{.R} file that contains your code. If you are not sure if work needs to be shown for a particular problem, please ask.
+\item Your homework should be submitted electronically on GitHub in \texttt{.pdf} form.
+\item This problem set is due before 23:59 on Sunday March 24, 2024. No late assignments will be accepted.
+	\end{itemize}
+
+	\vspace{.25cm}
+\section*{Question 1}
+\vspace{.25cm}
+\noindent We are interested in how governments' management of public resources impacts economic prosperity. Our data come from \href{https://www.researchgate.net/profile/Adam_Przeworski/publication/240357392_Classifying_Political_Regimes/links/0deec532194849aefa000000/Classifying-Political-Regimes.pdf}{Alvarez, Cheibub, Limongi, and Przeworski (1996)} and is labelled \texttt{gdpChange.csv} on GitHub. The dataset covers 135 countries observed between 1950 or the year of independence or the first year forwhich data on economic growth are available ("entry year"), and 1990 or the last year for which data on economic growth are available ("exit year"). The unit of analysis is a particular country during a particular year, for a total $>$ 3,500 observations. 
+
+\begin{itemize}
+	\item
+	Response variable: 
+	\begin{itemize}
+		\item \texttt{GDPWdiff}: Difference in GDP between year $t$ and $t-1$. Possible categories include: "positive", "negative", or "no change"
+	\end{itemize}
+	\item
+	Explanatory variables: 
+	\begin{itemize}
+		\item
+		\texttt{REG}: 1=Democracy; 0=Non-Democracy
+		\item
+		\texttt{OIL}: 1=if the average ratio of fuel exports to total exports in 1984-86 exceeded 50\%; 0= otherwise
+	\end{itemize}
+	
+\end{itemize}
+\newpage
+\noindent Please answer the following questions:
+
+\begin{enumerate}
+	\item Construct and interpret an unordered multinomial logit with \texttt{GDPWdiff} as the output and "no change" as the reference category, including the estimated cutoff points and coefficients.
+	\item Construct and interpret an ordered multinomial logit with \texttt{GDPWdiff} as the outcome variable, including the estimated cutoff points and coefficients.
+	\lstinputlisting[language=R, firstline=42,lastline=54]{PS3_answers_Jie.R}
+	% Table created by stargazer v.5.2.3 by Marek Hlavac, Social Policy Institute. E-mail: marek.hlavac at gmail.com
+	% Date and time: 周六, 3月 23, 2024 - 15:31:59
+	\begin{table}[!htbp] \centering 
+		\caption{} 
+		\label{} 
+		\begin{tabular}{@{\extracolsep{5pt}}lcc} 
+			\\[-1.8ex]\hline 
+			\hline \\[-1.8ex] 
+			& \multicolumn{2}{c}{\textit{Dependent variable:}} \\ 
+			\cline{2-3} 
+			\\[-1.8ex] & negative & positive \\ 
+			\\[-1.8ex] & (1) & (2)\\ 
+			\hline \\[-1.8ex] 
+			REG & 1.379$^{*}$ & 1.769$^{**}$ \\ 
+			& (0.769) & (0.767) \\ 
+			& & \\ 
+			OIL & 4.784 & 4.576 \\ 
+			& (6.885) & (6.885) \\ 
+			& & \\ 
+			Constant & 3.805$^{***}$ & 4.534$^{***}$ \\ 
+			& (0.271) & (0.269) \\ 
+			& & \\ 
+			\hline \\[-1.8ex] 
+			Akaike Inf. Crit. & 4,690.770 & 4,690.770 \\ 
+			\hline 
+			\hline \\[-1.8ex] 
+			\textit{Note:}  & \multicolumn{2}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+		\end{tabular} 
+	\end{table} 
+	\pagebreak
+	According to the results,we can write the functions:
+	\begin{equation}
+		ln(\frac{P_{negative}} {P_{no change}})=3.805+1.379REG+4.784OIL
+	\end{equation}
+	\begin{equation}
+		ln(\frac{P_{positive}} {P_{no change}})=4.534+1.769REG+4.576OIL
+	\end{equation}
+	(1)\\
+	Intercept (3.805): This represents the log-odds of a country experiencing a\\ negative change in GDP compared to no change when both REG and OIL are zero.\vspace{.25cm}
+	Coefficient of REG(1.379): For every one-unit increase in the REG variable, the\\ log-odds of a country experiencing a negative change in GDP compared to no change\\
+	increase by 1.379, holding all other variables constant. However, the p-value of
+	coefficient is during 0.05 to 0.1. \vspace{.25cm}\\
+	Coefficient of OIL have no significance. \vspace{1cm}\\
+	(2)\\Intercept (4.534): This represents the log-odds of a country experiencing a\\ positive change in GDP compared to no change when both REG and OIL are zero.\vspace{.25cm}
+	Coefficient of REG (1.769): For every one-unit increase in the REG variable, the\\ log-odds of a country experiencing a positive change in GDP compared to no change\\ increase by 1.769, holding all other variables constant.\vspace{.25cm}\\
+	Coefficient of OIL have no significance. 
+	\lstinputlisting[language=R,firstline=56,lastline=65]{PS3_answers_Jie.R}
+	% Table created by stargazer v.5.2.3 by Marek Hlavac, Social Policy Institute. E-mail: marek.hlavac at gmail.com
+	% Date and time: 周六, 3月 23, 2024 - 17:35:14
+	\begin{table}[!htbp] \centering 
+		\caption{} 
+		\label{} 
+		\begin{tabular}{@{\extracolsep{5pt}}lc} 
+			\\[-1.8ex]\hline 
+			\hline \\[-1.8ex] 
+			& \multicolumn{1}{c}{\textit{Dependent variable:}} \\ 
+			\cline{2-2} 
+			\\[-1.8ex] & GDPWdiff \\ 
+			\hline \\[-1.8ex] 
+			REG & 0.398$^{***}$ \\ 
+			& (0.075) \\ 
+			& \\ 
+			OIL & $-$0.199$^{*}$ \\ 
+			& (0.116) \\ 
+			& \\ 
+			\hline \\[-1.8ex] 
+			Observations & 3,721 \\ 
+			\hline 
+			\hline \\[-1.8ex] 
+			\textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+		\end{tabular} 
+	\end{table} 
+	\vspace{.5cm}
+	According to the results,we can write the functions:
+	\begin{equation}
+		ln(\frac{P_{negative}} {P_{no change}})=-0.7312+0.398REG-0.199OIL
+	\end{equation}
+	\begin{equation}
+		ln(\frac{P_{positive}} {P_{no change}})=-0.7105+0.398REG-0.199OIL
+	\end{equation}
+\end{enumerate}
+(3)\\
+Intercept (-0.7312): This represents the log-odds of a country experiencing\\ a negative change in GDP compared to no change when both REG and OIL are zero.\vspace{.25cm}
+Coefficient of REG (0.398): For every one-unit increase in the REG variable, the log-odds of a country experiencing a negative change in GDP compared to no change increase by 0.398, holding all other variables constant.\vspace{.25cm}\\
+Coefficient of OIL(-0.199): For every one-unit increase in the OIL variable,the log-odds of a country experiencing a negative change in GDP compared to no change decrease by 0.199, holding all other variables constant. However, the p-value of this coefficient is during from 0.1 to 0.05.\vspace{1cm}\\
+(4)\\Intercept (-0.7105): This represents the log-odds of a country experiencing a positive change in GDP compared to no change when both REG and OIL are zero.\vspace{.25cm}\\
+Coefficient of REG (0.398): For every one-unit increase in the REG variable, the log-odds of a country experiencing a positive change in GDP compared to no change increase by 0.398, holding all other variables constant.\vspace{.25cm}\\
+Coefficient of OIL (-0.199): For every one-unit increase in the OIL variable, the log-odds of a country experiencing a positive change in GDP compared to no change decrease by 0.199, holding all other variables constant.However, the p-value of this coefficient is during from 0.1 to 0.05, which not very significant.
+\pagebreak
+\section*{Question 2} 
+\vspace{.25cm}
+
+\noindent Consider the data set \texttt{MexicoMuniData.csv}, which includes municipal-level information from Mexico. The outcome of interest is the number of times the winning PAN presidential candidate in 2006 (\texttt{PAN.visits.06}) visited a district leading up to the 2009 federal elections, which is a count. Our main predictor of interest is whether the district was highly contested, or whether it was not (the PAN or their opponents have electoral security) in the previous federal elections during 2000 (\texttt{competitive.district}), which is binary (1=close/swing district, 0="safe seat"). We also include \texttt{marginality.06} (a measure of poverty) and \texttt{PAN.governor.06} (a dummy for whether the state has a PAN-affiliated governor) as additional control variables. 
+
+\begin{enumerate}
+	\item [(a)]
+	Run a Poisson regression because the outcome is a count variable. Is there evidence that PAN presidential candidates visit swing districts more? Provide a test statistic and p-value.
+	\lstinputlisting[language=R, firstline=73,lastline=93]{PS3_answers_Jie.R}
+	% Table created by stargazer v.5.2.3 by Marek Hlavac, Social Policy Institute. E-mail: marek.hlavac at gmail.com
+	% Date and time: 周六, 3月 23, 2024 - 20:04:25
+	\begin{table}[!htbp] \centering 
+		\caption{} 
+		\label{} 
+		\begin{tabular}{@{\extracolsep{5pt}}lc} 
+			\\[-1.8ex]\hline 
+			\hline \\[-1.8ex] 
+			& \multicolumn{1}{c}{\textit{Dependent variable:}} \\ 
+			\cline{2-2} 
+			\\[-1.8ex] & PAN.visits.06 \\ 
+			\hline \\[-1.8ex] 
+			PAN.governor.06 & $-$0.312$^{*}$ \\ 
+			& (0.167) \\ 
+			& \\ 
+			competitive.district & $-$0.081 \\ 
+			& (0.171) \\ 
+			& \\ 
+			marginality.06 & $-$2.080$^{***}$ \\ 
+			& (0.117) \\ 
+			& \\ 
+			Constant & $-$3.810$^{***}$ \\ 
+			& (0.222) \\ 
+			& \\ 
+			\hline \\[-1.8ex] 
+			Observations & 2,407 \\ 
+			Log Likelihood & $-$645.606 \\ 
+			Akaike Inf. Crit. & 1,299.213 \\ 
+			\hline 
+			\hline \\[-1.8ex] 
+			\textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
+		\end{tabular} 
+	\end{table} 
+	Due to the p-value of coefficient of competitive.district don not have enough distance to zero, so it means no significance.\\ There is no evidence that PAN presidential candidates visit swing districts more.
+	\pagebreak
+	\item [(b)]
+	Interpret the \texttt{marginality.06} and \texttt{PAN.governor.06} coefficients.\vspace{.5cm}\\
+	Coefficient of PAN.governor.06(-0.312): For every one-unit increase in the PAN.governor.06  variable, the log-odds of PAN visit decrease by 0.312, holding all other variables constant.\\
+	Due to p-value of coefficient of PAN.governor.06 don not have enough distance to zero,so the PAN.governor.06 is a not strongly  reliable and negative predictor of PAN visit.\vspace{.25cm}\\
+	Coefficient of marginality.06(-2.080): For every one-unit increase in the marginality.06  variable, the log-odds of PAN visit decrease by 2.080, holding all other variables constant
+	\item [(c)]
+	Provide the estimated mean number of visits from the winning PAN presidential candidate for a hypothetical district that was competitive (\texttt{competitive.district}=1), had an average poverty level (\texttt{marginality.06} = 0), and a PAN governor (\texttt{PAN.governor.06}=1).
+	coefficients.\vspace{.5cm}\\
+	Accorording to the table 3:
+	\begin{equation}
+ln(\lambda)=-3.810-0.312PAN.governor.06-0.081competitive.district-2.080marginality.06
+	\end{equation}
+	\begin{equation}
+\lambda=exp(-3.810-0.312*1-0.081*1-2.080*0)=exp(-4.203)
+	\end{equation}
+	
+\end{enumerate}
+
+\end{document}

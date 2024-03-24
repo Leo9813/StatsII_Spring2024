@@ -1,0 +1,97 @@
+#####################
+# load libraries
+# set wd
+# clear global .envir
+#####################
+# remove objects
+rm(list=ls())
+# detach all libraries
+detachAllPackages <- function() {
+  basic.packages <- c("package:stats", "package:graphics", "package:grDevices", "package:utils", "package:datasets", "package:methods", "package:base")
+  package.list <- search()[ifelse(unlist(gregexpr("package:", search()))==1, TRUE, FALSE)]
+  package.list <- setdiff(package.list, basic.packages)
+  if (length(package.list)>0)  for (package in package.list) detach(package,  character.only=TRUE)
+}
+detachAllPackages()
+
+# load libraries
+pkgTest <- function(pkg){
+  new.pkg <- pkg[!(pkg %in% installed.packages()[,  "Package"])]
+  if (length(new.pkg)) 
+    install.packages(new.pkg,  dependencies = TRUE)
+  sapply(pkg,  require,  character.only = TRUE)
+}
+library(stargazer)
+library(MASS)
+# here is where you load any necessary packages
+# ex: stringr
+# lapply(c("stringr"),  pkgTest)
+
+lapply(c("nnet", "MASS"),  pkgTest)
+
+# set wd for current folder
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+
+#####################
+# Problem 1
+#####################
+
+# load data
+gdp_data <- read.csv("https://raw.githubusercontent.com/ASDS-TCD/StatsII_Spring2024/main/datasets/gdpChange.csv", stringsAsFactors = F)
+#####################
+# 1
+#####################
+#Categorising GDPWdiff
+gdp_data$GDPWdiff <- ifelse(gdp_data$GDPWdiff>0,"positive",
+                            ifelse(gdp_data$GDPWdiff<0,"negative","no change"))
+gdp_data$GDPWdiff <- as.factor(gdp_data$GDPWdiff)
+gdp_data$GDPWdiff <- relevel(gdp_data$GDPWdiff,ref = "no change")
+
+# Running model
+mul_mod <- multinom(GDPWdiff~REG+OIL,data=gdp_data)
+summary(mul_mod)
+stargazer(mul_mod)
+
+#####################
+# 2
+#####################
+# Since I set the reference category in the previous question, 
+# but normally "negative" would be the default reference, I have adjusted it.
+gdp_data$GDPWdiff <- relevel(gdp_data$GDPWdiff,ref = "negative","no change","positive")
+# Running model
+model <- polr(GDPWdiff ~ REG + OIL, data = gdp_data)
+summary(model)
+stargazer(model)
+
+#####################
+# Problem 2
+#####################
+
+# load data
+mexico_elections <- read.csv("https://raw.githubusercontent.com/ASDS-TCD/StatsII_Spring2024/main/datasets/MexicoMuniData.csv")
+#####################
+#a 
+#####################
+# wrangle
+mexico_elections <- within(mexico_elections, {
+PAN.governor.06<- as.logical(PAN.governor.06)
+competitive.district<- as.logical(competitive.district)
+})
+
+# EDA
+str(mexico_elections)
+summary(mexico_elections)
+
+with(mexico_elections,
+     list(mean(PAN.visits.06), var(PAN.visits.06)))
+
+# Running model
+mod.ps <- glm(PAN.visits.06~ PAN.governor.06+competitive.district+marginality.06, 
+              data = mexico_elections, family = poisson)
+summary(mod.ps)
+stargazer(mod.ps)
+#####################
+#b
+#####################
+
